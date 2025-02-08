@@ -1,7 +1,11 @@
 
 
-## **Step 1: Start Kafka**
-Kafka is the backbone of your system, handling the streaming of smart meter data.
+## **Step 1: Instal Kafka**
+
+```bash
+tar -xzf kafka_2.13-3.2.1.tgz
+cd kafka_3.2.1
+```
 
 ### **1.1 Start Zookeeper**
 Zookeeper is required for Kafka to manage its brokers and topics.
