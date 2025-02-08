@@ -16,6 +16,7 @@ export default function NodeGraph() {
           x: Math.random() * 800,
           y: Math.random() * 600,
           phase: lastJsonMessage.new_phase,
+          imbalance: lastJsonMessage.imbalance, // Added imbalance
         },
       ].slice(-50)); // Keep only the last 50 nodes
     }
@@ -39,7 +40,8 @@ export default function NodeGraph() {
           {nodes.slice(-15).reverse().map((node) => (
             <li key={node.id} className="bg-gray-700/50 hover:bg-gray-600/60 shadow-md p-4 rounded-lg transition-all hover:scale-105">
               <span className="font-bold text-blue-400">ID:</span> {node.id} |
-              <span className="ml-2 font-bold text-yellow-400">Phase:</span> {node.phase}
+              <span className="ml-2 font-bold text-yellow-400">Phase:</span> {node.phase} |
+              <span className="ml-2 font-bold text-red-400">Imbalance:</span> {(node.imbalance * 100).toFixed(1)}%
             </li>
           ))}
         </ul>
