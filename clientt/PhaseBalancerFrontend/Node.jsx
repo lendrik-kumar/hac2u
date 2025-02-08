@@ -19,7 +19,7 @@ export default function Node({ node }) {
       fill={getPhaseColor(node.phase)}
       className="hover:stroke-white hover:stroke-[3px] hover:scale-125 drop-shadow-lg transition-transform animate-pulse duration-300 cursor-pointer"
     >
-      <title>{`Meter ID: ${node.id} | Phase: ${node.phase}`}</title>
+      <title>{`Meter ID: ${node.id} | Phase: ${node.phase} | Imbalance: ${(node.imbalance * 100).toFixed(1)}%`}</title>
     </animated.circle>
   );
 }
