@@ -27,24 +27,20 @@ export default function App() {
   const navigate = useNavigate();
 
 
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const walletAddress = localStorage.getItem("walletAddress"); 
-  //       if (!walletAddress) {
-  //         console.log("Wallet address not found");
-  //         return;
-  //       }
-  //        const res = await axios.get(`http://localhost:2000/api/user/${walletAddress}`);
-  //       console.log(res.data.username);
-  //       setUsername(res.data.username);
-  //       setEmail(res.data.email);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   fetchUserData();
-  // }, []);
+  useEffect(() => {
+    const fetchUserData = async () => {
+
+        const walletAddress = localStorage.getItem("walletAddress"); 
+        const username = localStorage.getItem("username");
+        const email = localStorage.getItem("email");
+        setUsername(username);
+        setEmail(email);
+        console.log(username);
+        console.log(email);
+      
+    };
+    fetchUserData();
+  }, []);
 
   return (
     <div>

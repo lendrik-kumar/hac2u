@@ -1,53 +1,190 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BackgroundBeamsWithCollision } from "../../components/ui/background-beams-with-collision.jsx";
 import Maps from '../../components/Maps.jsx';
 import { useMapContext } from '../../Context/mapContext';
 import { ethers } from 'ethers';
+import TradeList from '../../components/TradeList.jsx';
+import { useWeb3 } from '../../hooks/useWeb3.js';
+import { useContract } from '../../hooks/useContract';
+
 
 function Home() {
+  const { account, error } = useWeb3();
   const { isIconClicked } = useMapContext();
+  const { contracts } = useContract();
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [recentPurchases, setRecentPurchases] = useState([]);
+const [totalEnergyPurchased, setTotalEnergyPurchased] = useState(0);
+
 
   useEffect(() => {
     console.log(isIconClicked);
   }, [isIconClicked]);
+ 
+  
+  const [loading, setLoading] = useState(false);
+
+
 
   const sellers = [
-    { name: "Seller A", energy: "100 kWh", rate: "$0.12/kWh" },
-    { name: "Seller B", energy: "200 kWh", rate: "$0.11/kWh" },
-    { name: "Seller C", energy: "150 kWh", rate: "$0.13/kWh" }
+    { 
+      name: "Seller A", 
+      energy: "100 kWh", 
+      rate: "$0.12/kWh",
+      address: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", // Add actual seller address
+      tradeId: 0
+    },
+    { 
+      name: "Seller B", 
+      energy: "200 kWh", 
+      rate: "$0.11/kWh",
+      address: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC", // Add actual seller address
+      tradeId: 1
+    },
+    { 
+      name: "Seller C", 
+      energy: "150 kWh", 
+      rate: "$0.13/kWh",
+      address: "0x90F79bf6EB2c4f870365E785982E1f101E93b906", // Add actual seller address
+      tradeId: 2
+    }
   ];
-  const handleBuyEnergy = async (seller, amount, price) => {
+  const handleBuyEnergy = async (seller) => {
+    if (!account || !contracts) {
+      alert('Please connect your wallet first');
+      return;
+    }
+  
+    setLoading(true);
     try {
-      if (!window.ethereum) {
-        alert('Please install MetaMask!');
-        return;
-      }
-
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(
-        'YOUR_CONTRACT_ADDRESS', // Replace with your contract address
-        P2PEnergyTrading.abi,
-        signer
+      // Parse energy amount and rate
+      const energyAmount = parseFloat(seller.energy.split(' ')[0]);
+      const rate = parseFloat(seller.rate.replace('$', '').split('/')[0]);
+      const totalPrice = energyAmount * rate;
+  
+      // Convert to Wei
+      const energyInWei = ethers.utils.parseUnits(energyAmount.toString(), 18);
+      const priceInWei = ethers.utils.parseUnits(totalPrice.toString(), 6);
+  
+      // Approve USDT spending
+      const approveTx = await contracts.usdt.approve(
+        contracts.p2pTrading.address,
+        priceInWei
       );
-
-      const tradeId = 0; // Replace with the actual trade ID
-      const tx = await contract.purchaseEnergy(tradeId, {
-        value: ethers.utils.parseEther(price.replace('$', ''))
+      await approveTx.wait();
+  
+      // Get the trade ID for this seller
+      // You'll need to implement a way to get the trade ID
+      // For now, let's assume it's stored in the seller object or retrieved from the contract
+      const tradeId = 0; 
+  
+      // Execute purchase with only the trade ID
+      const purchaseTx = await contracts.p2pTrading.purchaseEnergy(tradeId);
+      await purchaseTx.wait();
+ 
+      setPopupMessage(`${seller.energy} energy successfully added to your account`);
+      setShowPopup(true);
+      const newPurchase = {
+        id: Date.now(),
+        energy: seller.energy,
+        amount: `$${(parseFloat(seller.energy) * parseFloat(seller.rate.replace('$', '').split('/')[0])).toFixed(2)}`,
+        seller: seller.name,
+        date: new Date().toLocaleString()
+      };
+  
+      setRecentPurchases(prevPurchases => {
+        const updatedPurchases = [newPurchase, ...prevPurchases].slice(0, 5); // Keep only last 5 purchases
+        return updatedPurchases;
       });
 
-      await tx.wait();
-      alert('Energy purchased successfully!');
+      setTotalEnergyPurchased(prevTotal => 
+        prevTotal + parseFloat(seller.energy.split(' ')[0])
+      );
+      
+      // Hide popup after 3 seconds
+      setTimeout(() => {
+        setShowPopup(false);
+      }, 3000);
+      
+   
+
     } catch (error) {
-      console.error(error);
-      alert('Failed to purchase energy.');
+      console.error('Purchase failed:', error);
+      alert('Failed to purchase energy: ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
+
   return (
     <BackgroundBeamsWithCollision>
       <div className="relative flex min-h-screen text-white">
+{ isIconClicked &&
+      <motion.div className="bg-black/50 border backdrop-blur-lg border-gray-700 shadow-xl py-4 w-auto rounded-xl" whileHover={{ scale: 1.02 }}>
+  <div className="flex justify-between items-center mb-4">
+    <h2 className="font-semibold text-lg pl-7">Recent Purchases  </h2>
+    <div className="text-blue-300 pl-6 ">
+      Total Energy: {totalEnergyPurchased.toFixed(2)} kWh
+    </div>
+
+  </div>
+  <div className="space-y-3">
+    {recentPurchases.length === 0 ? (
+      <div className="text-center text-gray-400">No purchases yet</div>
+    ) : (
+      recentPurchases.map((purchase) => (
+        <>
+        <motion.div 
+          key={purchase.id} 
+          className="flex justify-between px-4 py-2 bg-gray-900 rounded-md hover:bg-gray-700 transition"
+          whileTap={{ scale: 0.95 }}
+        >
+          <div className="flex flex-col">
+            <span>{`Purchased ${purchase.energy} from ${purchase.seller}`}</span>
+            <span className="text-sm text-gray-400">{purchase.date}</span>
+          </div>
+          <span className="text-green-300">{purchase.amount}</span>
+        </motion.div>
+      
+        </>
+        
+      ))
+    )}
+  </div>
+</motion.div>
+}
+
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 20 }}
+            exit={{ opacity: 0, y: -100 }}
+            className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50"
+          >
+            <div className="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+              <svg 
+                className="w-6 h-6" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M5 13l4 4L19 7" 
+                />
+              </svg>
+              <span>{popupMessage}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
         {/* Sidebar */}
         {isIconClicked && (
   <motion.div
@@ -56,19 +193,27 @@ function Home() {
     animate={{ opacity: 1, x: 0 }}
     transition={{ duration: 0.5 }}
   >
+
+
+
+
     <h2 className="text-xl font-bold text-center mb-4">Energy Sellers</h2>
     {sellers.map((seller, index) => (
       <div key={index} className="bg-gray-900 p-4 rounded-lg shadow-md">
         <p className="text-lg font-semibold">{seller.name}</p>
         <p className="text-gray-300">Energy: {seller.energy}</p>
         <p className="text-gray-400">Rate: {seller.rate}</p>
-        <button className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold w-full"
-      //onClick={handleBuyEnergy(seller.name, (seller.energy*seller.rate, seller.rate))}
-        >
-          Buy Now
-        </button>
+
+<button 
+  className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold w-full disabled:bg-gray-600 disabled:cursor-not-allowed"
+  onClick={() => handleBuyEnergy(seller)}
+  disabled={loading}
+>
+  {loading ? 'Processing...' : 'Buy Now'}
+</button>
       </div>
     ))}
+
   </motion.div>
 )}
 
@@ -140,7 +285,7 @@ function Home() {
               <h2 className="font-semibold text-lg mb-4">Recent Transactions</h2>
               <div className="space-y-3">
                 {[
-                  { desc: 'Purchased 50 kWh', amount: '+ $25', color: 'text-green-300' },
+                  { desc: `Purchased  kWh`, amount: '+ $25', color: 'text-green-300' },
                   { desc: 'Usage Payment', amount: '- $18', color: 'text-red-300' },
                   { desc: 'Purchased 100 kWh', amount: '+ $45', color: 'text-green-300' }
                 ].map((item, index) => (
@@ -152,7 +297,13 @@ function Home() {
             </motion.div>
           </div>
         </div>
+
+    
+
+
       </div>
+
+
     </BackgroundBeamsWithCollision>
   );
 }
