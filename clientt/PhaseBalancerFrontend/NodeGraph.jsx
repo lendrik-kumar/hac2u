@@ -17,7 +17,7 @@ export default function NodeGraph() {
           y: Math.random() * 600,
           phase: lastJsonMessage.new_phase,
         },
-      ].slice(-100)); // Keep only the last 100 nodes
+      ].slice(-50)); // Keep only the last 50 nodes
     }
   }, [lastJsonMessage]);
 
@@ -31,26 +31,25 @@ export default function NodeGraph() {
   }, [nodes]);
 
   return (
-    <div className="flex justify-center items-center gap-10 bg-gray-900 p-6 h-screen">
-      {/* Node Graph (Centered) */}
-      <div className="flex flex-col justify-center items-center border-gray-700 bg-gray-800 shadow-xl p-6 border rounded-lg">
-        <h2 className="mb-4 font-bold text-white text-xl tracking-wide">Live Node Map</h2>
-        <svg width={800} height={600} className="bg-gray-700 shadow-lg rounded-lg">
-          {nodes.map((node) => <Node key={node.id} node={node} />)}
-        </svg>
-      </div>
-
-      {/* Real-time Meter List (Right Side) */}
-      <div className="border-gray-700 bg-gray-800 shadow-xl p-6 border rounded-lg w-1/4 h-[600px] text-white overflow-y-auto">
-        <h2 className="border-gray-600 mb-4 pb-2 border-b font-bold text-lg tracking-wide">Real-time Meter Data</h2>
+    <div className="flex gap-6 bg-gray-950 p-6 h-screen">
+      {/* Sidebar for Real-time Data */}
+      <div className="border-gray-700 shadow-2xl p-6 border rounded-xl w-1/4 h-[600px] text-white overflow-y-auto glassmorphism">
+        <h2 className="border-gray-600 mb-4 pb-3 border-b font-semibold text-gray-300 text-lg uppercase tracking-wide">📡 Real-time Data</h2>
         <ul className="space-y-3">
-          {nodes.slice(-20).reverse().map((node) => (
-            <li key={node.id} className="bg-gray-700 shadow-md p-3 rounded-lg text-sm">
-              <span className="font-bold text-blue-400">ID:</span> {node.id} | 
+          {nodes.slice(-15).reverse().map((node) => (
+            <li key={node.id} className="bg-gray-700/50 hover:bg-gray-600/60 shadow-md p-4 rounded-lg transition-all hover:scale-105">
+              <span className="font-bold text-blue-400">ID:</span> {node.id} |
               <span className="ml-2 font-bold text-yellow-400">Phase:</span> {node.phase}
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* Node Graph */}
+      <div className="flex flex-grow justify-center items-center border-gray-700 bg-gray-900 shadow-2xl border rounded-xl">
+        <svg width={900} height={600} className="bg-gray-800 shadow-lg rounded-xl">
+          {nodes.map((node) => <Node key={node.id} node={node} />)}
+        </svg>
       </div>
     </div>
   );
