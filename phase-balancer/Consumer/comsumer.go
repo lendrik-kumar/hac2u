@@ -51,7 +51,7 @@ func process(reading types.SmartMeterReading) {
 	if imbalance > threshold {
 		targetPhase := calculateTargetPhase(reading)
 		storeInRedis(reading.MeterID, targetPhase)
-		Websocket.BroadcastUpdate(reading.MeterID, targetPhase)
+		Websocket.BroadcastUpdate(reading.MeterID, targetPhase, imbalance)
 	}
 }
 

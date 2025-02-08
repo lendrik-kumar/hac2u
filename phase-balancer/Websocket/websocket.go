@@ -20,6 +20,7 @@ type Update struct {
 	Phase      string  `json:"new_phase"`
 	Alert      string  `json:"alert,omitempty"`
 	Confidence float64 `json:"confidence,omitempty"`
+	Imbalance  float64 `json:"imbalance,omitempty"`  // new field
 }
 
 // start the websocket server
@@ -46,8 +47,12 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 }
 
 // brodcast the update to all clients
-func BroadcastUpdate(meterID string, phase string) {
-	msg := Update{MeterID: meterID, Phase: phase}
+func BroadcastUpdate(meterID string, phase string, imbalance float64) {
+	msg := Update{
+		MeterID:   meterID,
+		Phase:     phase,
+		Imbalance: imbalance,  // populate imbalance
+	}
 	for client := range clients {
 		client.WriteJSON(msg)
 	}
