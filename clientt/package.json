@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ethers": "^5.7.2",
     "@heroui/navbar": "^2.2.9",
     "@heroui/react": "^2.6.14",
     "@heroui/system": "^2.4.7",
@@ -23,7 +24,6 @@
     "axois": "^0.0.1-security",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
-    "ethers": "^6.13.5",
     "framer-motion": "^12.0.11",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.474.0",
