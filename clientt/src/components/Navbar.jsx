@@ -27,24 +27,24 @@ export default function App() {
   const navigate = useNavigate();
 
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const walletAddress = localStorage.getItem("walletAddress"); 
-        if (!walletAddress) {
-          console.log("Wallet address not found");
-          return;
-        }
-         const res = await axios.get(`http://localhost:2000/api/user/${walletAddress}`);
-        console.log(res.data.username);
-        setUsername(res.data.username);
-        setEmail(res.data.email);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchUserData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const walletAddress = localStorage.getItem("walletAddress"); 
+  //       if (!walletAddress) {
+  //         console.log("Wallet address not found");
+  //         return;
+  //       }
+  //        const res = await axios.get(`http://localhost:2000/api/user/${walletAddress}`);
+  //       console.log(res.data.username);
+  //       setUsername(res.data.username);
+  //       setEmail(res.data.email);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, []);
 
   return (
     <div>
@@ -54,11 +54,11 @@ export default function App() {
         style={{ position: 'sticky', top: 0 }}
       >
         
-        <NavbarBrand className="pl-10">
+        <NavbarBrand className="pl-12">
           <img src={logo} alt="Logo" className="h-12"/>
         </NavbarBrand>
 
-        <NavbarContent className="hidden sm:flex gap-24 flex-grow pl-0 pr-20 justify-center">
+        <NavbarContent className="hidden sm:flex gap-24 flex-grow pl-0 pr-36 justify-center">
           <NavbarItem>
             <NavLink to={'/app/Articles'}>
               <Link color="foreground" className="text-white text-lg">
@@ -81,12 +81,20 @@ export default function App() {
             </a>
           </NavbarItem>
           <NavbarItem>
+            <NavLink to={'/app/Balancer'}>
+              <Link color="foreground" className="text-white text-lg">
+                Balancer
+              </Link>
+            </NavLink>
+          </NavbarItem>
+        
+          {/* <NavbarItem>
             <NavLink to={'/app/Contact'}>
               <Link color="foreground" className="text-white text-lg">
                 Contact Us
               </Link>
             </NavLink>
-          </NavbarItem>
+          </NavbarItem> */}
           <NavbarItem>
             <NavLink to={'/app/About'}>
               <Link color="foreground" className="text-white text-lg">

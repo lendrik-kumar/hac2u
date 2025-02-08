@@ -1,4 +1,4 @@
-package _MeterPhaseBalancer
+package main
 
 import (
 	"phase-balancer/Consumer"
