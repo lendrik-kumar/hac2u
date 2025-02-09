@@ -1,4 +1,4 @@
-export const P2PEnergyTrading = [
+ const P2PEnergyTrading = [
 	{
 		"inputs": [
 			{
@@ -233,3 +233,5 @@ export const P2PEnergyTrading = [
 		"type": "function"
 	}
 ]
+
+export { P2PEnergyTrading };
