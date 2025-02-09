@@ -1,4 +1,4 @@
- const MockUSDTABI = [
+export const MockUSDTABI = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -314,4 +314,4 @@
 	}
 ]
 
-export  {MockUSDTABI}
+

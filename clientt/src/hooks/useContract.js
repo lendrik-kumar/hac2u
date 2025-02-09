@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import {P2PEnergyTrading} from '../../../contracts/p2pEnergy.js';
-import {EnergyTokenABI} from '../../../contracts/EnergyToken.js';
-import {MockUSDTABI} from '../../../contracts/MockUSDT.js';
+import { P2PEnergyTrading } from '../../../contracts/p2pEnergy.js';
+import { EnergyTokenABI } from '../../../contracts/EnergyToken.mjs';
+import { MockUSDTABI } from '../../../contracts/MockUSDT.mjs';
+// import { EnergyTokenABI } from '../../../contracts/EnergyToken.js';
+// import { MockUSDTABI } from '../../../contracts/MockUSDT.js';
 
 const CONTRACT_ADDRESSES = {
   P2P_TRADING: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
