@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
-import EnergyTokenABI from "../../../contracts/EnergyToken.js";
-import MockUSDTABI from "../../../contracts/MockUSDT.js"
+import {EnergyTokenABI} from "../../../contracts/EnergyToken.mjs";
 import dotenv from "dotenv";
 
 dotenv.config();

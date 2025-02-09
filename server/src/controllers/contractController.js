@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 dotenv.config(); // Ensure .env is loaded before anything else
 
 import { ethers } from "ethers";
-import EnergyTokenABI from "../../../contracts/EnergyToken.js" ;
-import MockUSDTABI from "../../../contracts/MockUSDT.js" ;
+import {EnergyTokenABI} from "../../../contracts/EnergyToken.mjs" ;
+import {MockUSDTABI} from "../../../contracts/MockUSDT.mjs" ;
 
 
 // Ensure required environment variables are present
