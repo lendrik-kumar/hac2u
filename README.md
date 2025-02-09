@@ -4,6 +4,55 @@
 
 This project is a comprehensive decentralized energy trading platform that enables peer-to-peer energy transactions using blockchain technology. It combines a React frontend, Go backend for phase balancing, and Ethereum smart contracts to create a seamless energy trading ecosystem.
 
+## System Flow
+
+1. **User Registration & Authentication**
+   - User creates an account
+   - Connects MetaMask wallet
+   - Completes KYC verification
+
+2. **Energy Production & Monitoring**
+   - Smart meters record energy production
+   - Data sent to Phase Balancer via Kafka
+   - Real-time monitoring through WebSocket
+
+3. **Phase Balancing**
+   - Go backend processes meter readings
+   - Calculates optimal phase distribution
+   - Updates phase assignments in Redis
+   - Notifies frontend via WebSocket
+
+4. **Energy Trading**
+   - Producer lists excess energy
+   - Energy tokens minted (ERC20)
+   - Consumers browse available energy
+   - Smart contract handles P2P trading
+   - USDT used for settlements
+
+5. **Transaction Settlement**
+   - Smart contract verifies balance
+   - Executes token transfer
+   - Updates energy allocation
+   - Records transaction on blockchain
+
+6. **Monitoring & Reporting**
+   - Dashboard shows real-time metrics
+   - Energy consumption patterns
+   - Trading history
+   - Phase balance status
+
+```mermaid
+graph TD
+    A[Smart Meter] -->|Readings| B[Kafka]
+    B --> C[Phase Balancer]
+    C -->|Updates| D[Redis Cache]
+    C -->|Notifications| E[WebSocket]
+    E --> F[Frontend Dashboard]
+    G[User] -->|Trade| H[Smart Contract]
+    H -->|Settlement| I[Blockchain]
+    I -->|Confirmation| F
+```
+
 ## Key Features
 
 - 🔐 **Secure Authentication**: User authentication and authorization system
