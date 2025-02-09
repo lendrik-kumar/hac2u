@@ -56,16 +56,16 @@ export default function App() {
 
         <NavbarContent className="hidden sm:flex gap-24 flex-grow pl-0 pr-36 justify-center">
           <NavbarItem>
-            <NavLink to={'/app/Articles'}>
+            <NavLink to={'/app/Policies'}>
               <Link color="foreground" className="text-white text-lg">
-                Articles
+                Policies
               </Link>
             </NavLink>
           </NavbarItem>
           <NavbarItem>
-            <NavLink to={'/app/Policies'}>
+            <NavLink to={'/app/Articles'}>
               <Link color="foreground" className="text-white text-lg">
-                Policies
+                Articles
               </Link>
             </NavLink>
           </NavbarItem>
