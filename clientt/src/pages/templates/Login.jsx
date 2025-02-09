@@ -45,20 +45,12 @@ import MetamaskLogo from '../../assets/MetaMaskLogo.png'
         const accounts = await provider.request({ method: 'eth_requestAccounts' });
         setAccount(accounts[0]);
         console.log(accounts[0]);
-        try{
-          await axios.post(`http://localhost:4000/api/auth/login`, 
-          { walletAddress : accounts[0],
-            email : email,
-            username : username,
-          });
+        
           localStorage.setItem("email", email);
           localStorage.setItem("username", username);
           localStorage.setItem("walletAddress", accounts[0]);
           navigate('/app/home');
-        }
-        catch(err){
-          console.log(err);
-        }
+        
         console.log('Connected account:', accounts[0]);
         SetEmail('');
         setUsername('');
