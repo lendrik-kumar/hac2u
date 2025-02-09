@@ -78,7 +78,7 @@ const [totalEnergyPurchased, setTotalEnergyPurchased] = useState(0);
       // Get the trade ID for this seller
       // You'll need to implement a way to get the trade ID
       // For now, let's assume it's stored in the seller object or retrieved from the contract
-      const tradeId = 0; 
+      const tradeId = 10; 
   
       // Execute purchase with only the trade ID
       const purchaseTx = await contracts.p2pTrading.purchaseEnergy(tradeId);

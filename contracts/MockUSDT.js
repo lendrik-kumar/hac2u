@@ -1,4 +1,4 @@
-export const MockUSDT = [
+ const MockUSDTABI = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -313,3 +313,5 @@ export const MockUSDT = [
 		"type": "function"
 	}
 ]
+
+export  {MockUSDTABI}

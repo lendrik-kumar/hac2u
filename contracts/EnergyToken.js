@@ -1,4 +1,4 @@
-export const EnergyToken = [
+ const EnergyTokenABI = [
 	{
 		"inputs": [
 			{
@@ -467,3 +467,5 @@ export const EnergyToken = [
 		"type": "function"
 	}
 ]
+
+export  {EnergyTokenABI}

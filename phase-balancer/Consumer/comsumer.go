@@ -3,7 +3,6 @@ package Consumer
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"math"
 	"time"
 
@@ -49,7 +48,6 @@ func process(reading types.SmartMeterReading) {
 
 	// teargetphase and brodcast to frontend and store in redis
 	if imbalance > threshold {
-		fmt.Print(imbalance)
 		targetPhase := calculateTargetPhase(reading)
 		storeInRedis(reading.MeterID, targetPhase)
 		Websocket.BroadcastUpdate(reading.MeterID, targetPhase, imbalance)
