@@ -21,7 +21,7 @@ export default function App() {
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [walletAddress, setWalletAddress] = useState('');
+
 
 
   const navigate = useNavigate();

@@ -6,7 +6,6 @@ import Compiler from './components/Compiler.jsx';
 import Articles from './pages/templates/Articles.jsx';
 import Policies from './pages/templates/Policies.jsx';
 import About from './pages/templates/About.jsx';
-// import Contact from './pages/templates/Contact.jsx';
 import PhaseBalancer from './pages/templates/PhaseBalancer.jsx';
 
 function App() {
@@ -24,7 +23,6 @@ function App() {
           <Route path='Policies' element={<Policies />} />
           <Route path='Balancer' element={<PhaseBalancer/>}></Route>
           <Route path='About' element={<About />} />
-          {/* <Route path='Contact' element={<Contact />} /> */}
         </Route>
       </Routes>
     </Router>

@@ -7,7 +7,7 @@ function About() {
     <BackgroundBeamsWithCollision>
       <div className="max-w-7xl h-auto mx-auto  w-screen justify-center items-center shadow-2xl rounded-xl p-20 flex flex-col lg:flex-row gap-10 border border-gray-300 relative overflow-hidden">
         
-        {/* Background Glow */}
+
         <div className="absolute inset-0 bg-gradient-to-r from-orange-100 via-white to-blue-100 opacity-40 blur-3xl"></div>
 
         {/* Left Section: Text Content */}
